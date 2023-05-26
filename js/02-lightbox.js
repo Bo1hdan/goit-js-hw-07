@@ -3,45 +3,22 @@ import { galleryItems } from "./gallery-items.js";
 
 let gallery = document.querySelector(".gallery");
 
-function createGalleryItem() {
-  const galleryItem = galleryItems.map((item) => {
-    let galleryListEl = document.createElement("li");
-    galleryListEl.classList.add("gallery__item");
+const galleryItem = galleryItems.map((item) => {
+  let galleryListEl = `<li class="gallery__item">
+    <a class="gallery__link" href="${item.original}">
+      <img
+        class="gallery__image"
+        src="${item.preview}"
+        alt="${item.description}"
+      />
+    </a>
+  </li>`;
 
-    let galleryElLink = document.createElement("a");
-    galleryElLink.classList.add("gallery__link");
-    galleryElLink.setAttribute("href", item.original);
+  return galleryListEl;
+});
+gallery.insertAdjacentHTML("beforeend", galleryItem.join(""));
 
-    let img = document.createElement("img");
-    img.src = item.preview;
-    img.classList.add("gallery__image");
-    img.setAttribute("alt", item.description);
-
-    galleryListEl.append(galleryElLink);
-    galleryElLink.append(img);
-
-    return galleryListEl;
-  });
-
-  gallery.append(...galleryItem);
-}
-createGalleryItem();
-
-function clickedElement() {
-  gallery.addEventListener("click", function (e) {
-    e.preventDefault();
-
-    let clickedItemEl = e.target.closest(".gallery__item");
-
-    if (!clickedItemEl) {
-      return;
-    }
-  });
-}
 let lightbox = new SimpleLightbox(".gallery a", {
   captionsData: "alt",
   captionDelay: 250,
 });
-
-clickedElement();
-console.log(galleryItems);
